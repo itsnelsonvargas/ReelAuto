@@ -3,6 +3,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from core.script_gen import generate_script_with_gpt, generate_random_script
+from core.video_gen import generate_video_from_script
+
 
 class ReelAutoApp:
     def __init__(self, root):
@@ -67,14 +69,18 @@ class ReelAutoApp:
         self.output_text.insert(tk.END, script)
 
     def on_generate_video(self):
-        topic = self.topic_var.get().strip()
-        if not topic:
-            messagebox.showerror("Missing Topic", "Please enter a topic.")
+        script = self.output_text.get(1.0, tk.END).strip()
+        if not script:
+            messagebox.showerror("No Script", "Please generate a script first.")
             return
 
-        # Placeholder for video generation logic.
-        self.output_text.delete(1.0, tk.END)
-        self.output_text.insert(tk.END, f"Generating video for: {topic}...\n")
+        self.output_text.insert(tk.END, "\n\nGenerating video... Please wait.\n")
+        try:
+            path = generate_video_from_script(script)
+            self.output_text.insert(tk.END, f"\n✅ Video saved to: {path}")
+        except Exception as e:
+            self.output_text.insert(tk.END, f"\n❌ Video generation failed: {str(e)}")
+
 
     def on_save_script(self):
         script = self.output_text.get(1.0, tk.END).strip()

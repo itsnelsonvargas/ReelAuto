@@ -1,0 +1,10 @@
+moviepy
+pyttsx3
+gTTS
+imageio
+imageio_ffmpeg
+numpy
+pillow
+proglog
+python-dotenv
+google-generativeai

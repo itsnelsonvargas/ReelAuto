@@ -1,10 +1,7 @@
-# gui/window.py
-
 import tkinter as tk
 from tkinter import ttk, messagebox
 from core.script_gen import generate_script_with_gpt, generate_random_script
 from core.video_gen import generate_video_from_script
-
 
 class ReelAutoApp:
     def __init__(self, root):
@@ -69,21 +66,23 @@ class ReelAutoApp:
         self.output_text.insert(tk.END, script)
 
     def on_generate_video(self):
-        script = self.output_text.get(1.0, tk.END).strip()
+        script = self.output_text.get("1.0", tk.END).strip()  # Use self.output_text here
+
         if not script:
-            messagebox.showerror("No Script", "Please generate a script first.")
+            messagebox.showwarning("Empty Script", "Please generate a script first.")
             return
 
-        self.output_text.insert(tk.END, "\n\nGenerating video... Please wait.\n")
         try:
-            path = generate_video_from_script(script)
-            self.output_text.insert(tk.END, f"\n✅ Video saved to: {path}")
+            print("Generating video... Please wait.")
+            output_path = generate_video_from_script(script)
+            print("✅ Video generated at:", output_path)
+            messagebox.showinfo("Success", f"Video generated successfully!\n\nSaved to:\n{output_path}")
         except Exception as e:
-            self.output_text.insert(tk.END, f"\n❌ Video generation failed: {str(e)}")
-
+            print("❌ Video generation failed:", e)
+            messagebox.showerror("Error", f"Video generation failed:\n\n{e}")
 
     def on_save_script(self):
-        script = self.output_text.get(1.0, tk.END).strip()
+        script = self.output_text.get(1.0, tk.END).strip()  # Get the script from the output_text widget
         if not script:
             messagebox.showerror("No Script", "Please generate a script first.")
             return

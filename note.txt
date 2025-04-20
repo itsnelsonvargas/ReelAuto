@@ -1,0 +1,22 @@
+installer:
+
+Imagick installation guide:
+Step 1: Install ImageMagick with correct options
+Go to: https://imagemagick.org/script/download.php#windows
+
+Step 2: Download the Windows 64-bit Q16 installer (ImageMagick-7.x.x-...-Q16-x64-dll.exe)
+
+Step 3: During installation:
+
+✅ Check the box that says “Add application directory to your system path”
+
+✅ Check “Install legacy utilities (e.g., convert)”
+
+✅ Leave the default path (e.g., C:\Program Files\ImageMagick-7.1.1-Q16)
+
+Step 2: Verify installation
+Open a new PowerShell window (important to refresh the environment), and type:
+ 
+magick -version
+
+ 

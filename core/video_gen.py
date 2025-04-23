@@ -1,40 +1,25 @@
+# core/video_gen.py
+
 import os
-from dotenv import load_dotenv
-from moviepy.editor import TextClip, CompositeVideoClip, AudioFileClip
-from moviepy.config import get_setting, change_settings
-
-# Load environment variables
-load_dotenv()
-
-# Set ImageMagick binary path
-change_settings({
-    "IMAGEMAGICK_BINARY": r"C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\magick.exe"
-})
-print("✅ ImageMagick path set to:", get_setting("IMAGEMAGICK_BINARY"))
-
-# ElevenLabs imports
 from elevenlabs.client import ElevenLabs
-from elevenlabs import save
+from moviepy.editor import TextClip, CompositeVideoClip, AudioFileClip
+from dotenv import load_dotenv
+
+from elevenlabs import generate, save
+# Load API key from .env
+load_dotenv()
+eleven = ElevenLabs(api_key=os.getenv("ELEVENLABS_API_KEY"))
+
+
 
 def text_to_speech(script, audio_path="output/audio.wav"):
-    os.makedirs(os.path.dirname(audio_path), exist_ok=True)
-
-    # Initialize ElevenLabs client
-    client = ElevenLabs(api_key=os.getenv("ELEVENLABS_API_KEY"))
-
-    # Generate audio
-    audio = client.generate(
-        text=script,
-        voice="Rachel",  # Change to any supported voice name or ID
-        model="eleven_monolingual_v1"
-    )
-
-    save(audio, audio_path)
+    # Ensure you replace 'your_voice_id' with a valid Eleven Labs voice ID
+    audio = generate(script, voice="your_voice_id")  # Replace with a valid voice ID
+    save(audio, audio_path)  # Save the audio to a file (e.g., 'output/audio.wav')
     return audio_path
 
 
 def generate_video_from_script(script, output_path="output/generated_video.mp4"):
-    print("🔍 Using ImageMagick from:", get_setting("IMAGEMAGICK_BINARY"))
     os.makedirs("output", exist_ok=True)
 
     # Step 1: Generate audio from script
